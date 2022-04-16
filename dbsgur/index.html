@@ -1,0 +1,139 @@
+<!DOCTYPE html>
+<html lang="ko">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Document</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Gugi&display=swap" rel="stylesheet">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Jua&display=swap" rel="stylesheet">
+  <script src="http://ajax.googleapis.com/ajax/libs/jquery/3.1.1/jquery.min.js"></script>
+</head>
+<script>
+  var time = 0;
+  var starFlag = true;
+  $(document).ready(function () {
+    buttonEvt();
+  });
+
+  function init() {
+    document.getElementById("time").innerHTML = "00:00:00";
+  }
+
+  function buttonEvt() {
+    var hour = 0;
+    var min = 0;
+    var sec = 0;
+    var timer;
+
+    // start btn
+    $("#startbtn").click(function () {
+
+      if (starFlag) {
+        $(".fa").css("color", "#FAED7D")
+        this.style.color = "#4C4C4C";
+        starFlag = false;
+
+        if (time == 0) {
+          init();
+        }
+
+        timer = setInterval(function () {
+          time++;
+
+          min = Math.floor(time / 60);
+          hour = Math.floor(min / 60);
+          sec = time % 60;
+          min = min % 60;
+
+          var th = hour;
+          var tm = min;
+          var ts = sec;
+          if (th < 10) {
+            th = "0" + hour;
+          }
+          if (tm < 10) {
+            tm = "0" + min;
+          }
+          if (ts < 10) {
+            ts = "0" + sec;
+          }
+
+          document.getElementById("time").innerHTML = th + ":" + tm + ":" + ts;
+        }, 1000);
+      }
+    });
+
+    // pause btn
+    $("#pausebtn").click(function () {
+      if (time != 0) {
+        $(".fa").css("color", "#FAED7D")
+        this.style.color = "#4C4C4C";
+        clearInterval(timer);
+        starFlag = true;
+      }
+    });
+
+    // stop btn
+    $("#stopbtn").click(function () {
+      if (time != 0) {
+        $(".fa").css("color", "#FAED7D")
+        this.style.color = "#4C4C4C";
+        clearInterval(timer);
+        starFlag = true;
+        time = 0;
+        init();
+      }
+    });
+  }
+
+</script>
+<style>
+  body {
+    width: 99vw;
+    height: 99vh;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    font-family: 'Gugi', cursive;
+    font-size: 18vw;
+    font-weight: 900;
+    cursor: url(yh.cur), auto;
+    background-color: pink;
+    color: white
+  }
+
+  button {
+    background-color: transparent;
+    color: white;
+    font-family: 'Jua', sans-serif;
+    font-size: 7vw;
+    font-weight: 300;
+    border: 0px;
+    cursor: url(cursor.cur), auto;
+  }
+</style>
+
+<body>
+  <text id="time">
+    화이팅
+  </text>
+  <div>
+    <button id="startbtn">
+      🔥
+    </button>
+    <button id="pausebtn">
+      ☕️
+    </button>
+    <button id="stopbtn">
+      🚫
+    </button>
+  </div>
+</body>
+
+</html>
