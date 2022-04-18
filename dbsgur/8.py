@@ -18,11 +18,8 @@ def dfs(parent):
                 color[i] = 1
             dfs(i)
         elif color[i] == pColor:
-            # print("NO")
-            # print("color = pColor")
             flag = False
             return
-    # print("end")
 
     return
 
