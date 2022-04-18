@@ -30,6 +30,9 @@ def bfs(graph, visited, distance, start):
         if cnt == distance and now != start :
             correct_list.append(now)
         
+        if cnt > distance :
+            break
+        
         for i in graph[now]:
             if visited[i] == False:
                 visited[i] = True
