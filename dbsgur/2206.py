@@ -1,5 +1,3 @@
-# 너무어렵네여
-
 import sys
 from collections import deque
 
@@ -13,49 +11,66 @@ N, M = map(int, input().split())
 
 matrix = [[int(x) for x in input().strip()]for _ in range(N)]
 
-visited = [[False] * N for _ in range(N)]
+visited = [[[0] * 2 for _ in range(M)] for _ in range(N)]
+# visited = [[[0] * M for _ in range(N)] for _ in range(2)]
 
-# !!! 뭔가를 매개변수로 넘겨야할 때는 dfs
-# 여기서는 벽 몇개 부쉇는지
-# 그러나 매개변수를 안넘겨 줘도 된다면 ?!
+# 상하 좌우
+moves = [[-1, 0], [1, 0], [0, -1], [0, 1]]
+
+
+def bfs():
+    dq = deque()
+    dq.append((0, 0, 0))
+    while dq:
+        x, y, c = dq.popleft()
+        if x == N-1 and y == M-1:
+            print(visited[x][y][c] + 1)
+            return
+        for move in moves:
+            nx = x + move[0]
+            ny = y + move[1]
+            if nx < 0 or ny < 0 or nx >= N or ny >= M or c > 1:
+                continue
+            if matrix[nx][ny] == 0 and visited[nx][ny][c] == 0:
+                visited[nx][ny][c] = visited[x][y][c] + 1
+                dq.append((nx, ny, c))
+            elif matrix[nx][ny] == 1 and c == 0:
+                visited[nx][ny][c+1] = visited[x][y][c] + 1
+                dq.append((nx, ny, c+1))
+    print(-1)
+    return
+
+
+bfs()
 # def bfs():
-#   dq = deque((x,y,z))
-#   while dq :
-#     a,b,c = dq.popleft()
-#     if a == N-1 and b == M-1 :
-#       return visited[a][b][c]
-#       ...
+#     dq = deque()
+#     # x, y, count
+#     dq.append((0, 0, 0))
+#     visited[0][0] = True
+#     flag = False
+#     while dq:
+#         x, y, c = dq.popleft()
+#         print(f"x: {x} y : {y} c: {c}")
+#         if c > 1:
+#             continue
+#         if x == N-1 and y == M-1:
+#             print(c)
+#             flag = True
+#             return
+#         for i in range(4):
+#             nx = x + dx[i]
+#             ny = y + dy[i]
+#             print(f"nx : {nx} ny: {ny}")
+#             if nx < 0 or ny < 0 or nx >= N or ny >= M or c > 1:
+#                 continue
+#             if visited[nx][ny] == False:
+#                 visited[nx][ny] = True
+#                 dq.append((nx, ny, c+1))
 
-# fuck dfs
-# results = []
-# def dfs(x, y, broke, count):
-#     visited[x][y] = True
-#     if x == N-1 and y == M-1:
-#         results.append(count)
-#         return
-#     around = [[x-1, y], [x+1, y], [x, y-1], [x, y+1]]
-#     for nx, ny in around:
-#         if 0 <= nx < N and 0 <= ny < M and visited[nx][ny] == False:
-#             if broke == 0:
-#                 # matrix[x][y] == 1 이면 벽
-#                 if matrix[nx][ny] == 1:
-#                     visited[nx][ny] = True
-#                     dfs(nx, ny, 1, count+1)
-#                     visited[nx][ny] = False
-#                 else:
-#                     visited[nx][ny] = True
-#                     dfs(nx, ny, 0, count+1)
-#                     visited[nx][ny] = False
-#             elif broke == 1:
-#                 if matrix[nx][ny] == 0:
-#                     visited[nx][ny] = True
-#                     dfs(nx, ny, 1, count+1)
-#                     visited[nx][ny] = False
+#     if not flag:
+#         print(-1)
 
 
-# dfs(0, 0, 0, 1)
+# bfs()
 
-# if len(results) == 0:
-#     print(-1)
-# else:
-#     print(min(results))
+# print(f"N:{N} M :{M}")
