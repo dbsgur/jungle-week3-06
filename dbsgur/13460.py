@@ -18,6 +18,7 @@ queue = []  # BFS : queue 활용
 # Red(rx,ry)와 Blue(bx,by)의 탐사 여부 체크
 visited = [[[[False] * M for _ in range(N)]
             for _ in range(M)] for _ in range(N)]
+#visited = [[[False] * M for _ in range(N)] for _ in range(2)]
 
 
 def pos_init():
@@ -31,6 +32,9 @@ def pos_init():
     # 위치 정보와 depth(breadth 끝나면 +1)
     queue.append((rx, ry, bx, by, 1))
     visited[rx][ry][bx][by] = True
+    # [0] -> red
+    # visited[0][rx][ry] = True
+    # visited[1][bx][by] = True
 
 
 def move(x, y, dx, dy):
@@ -64,6 +68,9 @@ def solve():
                         nbx -= dx[i]
                         nby -= dy[i]
                 # breadth 탐색 후, 탐사 여부 체크
+                # if not visited[0][nrx][nry] and not visited[1][nbx][nby]:
+                #     visited[0][nrx][nry] = True
+                #     visited[1][nbx][nby] = True
                 if not visited[nrx][nry][nbx][nby]:
                     visited[nrx][nry][nbx][nby] = True
                     # 다음 depth의 breadth 탐색 위한 queue

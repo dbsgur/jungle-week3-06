@@ -9,9 +9,13 @@ R, C = map(int, input().split())
 dx = [-1, 1, 0, 0]
 dy = [0, 0, -1, 1]
 
-forest = [[x for x in input().strip()]for _ in range(R)]
+# forest = [[x for x in input().strip()]for _ in range(R)]
+forest = []
+for _ in range(R):
+    s = input()
+    forest.append(s)
 
-visited = [[0]*C for _ in range(R)]
+visited = [[-1]*C for _ in range(R)]
 
 
 def waterBfs():
@@ -20,6 +24,7 @@ def waterBfs():
     for i in range(R):
         for j in range(C):
             if forest[i][j] == "*":
+                visited[i][j] = 0
                 waterQ.append((i, j))
     while waterQ:
         x, y = waterQ.popleft()
@@ -28,16 +33,18 @@ def waterBfs():
             ny = y + dy[i]
             if nx < 0 or nx >= R or ny < 0 or ny >= C:
                 continue
-            if forest[nx][ny] != "D" and forest[nx][ny] != "X" and forest[nx][ny] != "*" and not visited[nx][ny]:
+            # if forest[nx][ny] != "D" and forest[nx][ny] != "X" and forest[nx][ny] != "*" and not visited[nx][ny]:
+            if forest[nx][ny] == "." and visited[nx][ny] == -1:
                 visited[nx][ny] = visited[x][y] + 1
                 waterQ.append((nx, ny))
     for i in range(R):
         for j in range(C):
             if forest[i][j] == "S":
-                waterQ.append((i, j, 0))
+                waterQ.append((i, j))
+                visited[i][j] = 0
                 break
     while waterQ:
-        x, y, d = waterQ.popleft()
+        x, y = waterQ.popleft()
         if forest[x][y] == "D":
             flag = True
             break
@@ -46,14 +53,15 @@ def waterBfs():
             ny = y + dy[i]
             if nx < 0 or nx >= R or ny < 0 or ny >= C:
                 continue
-            if visited[nx][ny] > d+1 or visited[nx][ny] == 0:
+            if visited[nx][ny] > visited[x][y]+1 or visited[nx][ny] == -1:
                 if forest[nx][ny] == "D" or forest[nx][ny] == ".":
-                    waterQ.append((nx, ny, d+1))
+                    visited[nx][ny] = visited[x][y] + 1
+                    waterQ.append((nx, ny))
 
     if not flag:
         print("KAKTUS")
     else:
-        print(f"{d}")
+        print(f"{visited[x][y]}")
 
 
 waterBfs()
